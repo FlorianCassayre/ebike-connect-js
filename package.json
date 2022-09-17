@@ -1,0 +1,52 @@
+{
+  "name": "ebike-connect-js",
+  "version": "0.1.0",
+  "main": "build/cjs/index.js",
+  "module": "build/es6/index.js",
+  "types": "build/es6/index.d.ts",
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "execute": "node -r ts-node/register -r dotenv/config",
+    "build:es6": "tsc --module es6 --declaration --outDir build/es6 --excludeDirectories tests",
+    "build:cjs": "tsc --module commonjs --outDir build/cjs",
+    "build:clean": "rm -rf build",
+    "build": "npm run build:clean && npm run build:es6 && npm run build:cjs",
+    "generate-zod": "ts-to-zod src/types.ts tests/generated/schemas.ts",
+    "test": "npm run generate-zod && mocha -r ts-node/register -r dotenv/config tests/**/*.test.ts --timeout 10000",
+    "lint": "eslint --fix src/**.ts",
+    "format": "prettier --write src/**.ts tests/**.ts *.json .eslintrc.json .prettierrc",
+    "check": "eslint src/**.ts && prettier --check src/**.ts tests/**.ts *.json .eslintrc.json .prettierrc"
+  },
+  "author": "Florian Cassayre",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FlorianCassayre/ebike-connect-js"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.3",
+    "@types/mocha": "^9.1.1",
+    "@types/node-fetch": "^2.6.2",
+    "@typescript-eslint/eslint-plugin": "^5.37.0",
+    "chai": "^4.3.6",
+    "dotenv": "^16.0.2",
+    "eslint": "^8.23.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.1",
+    "mocha": "^10.0.0",
+    "prettier": "^2.7.1",
+    "ts-node": "^10.9.1",
+    "ts-to-zod": "^1.13.1",
+    "typescript": "^4.8.3",
+    "zod": "^3.19.1"
+  },
+  "dependencies": {
+    "node-fetch": "2.6.7"
+  }
+}
