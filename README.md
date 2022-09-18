@@ -1,5 +1,13 @@
 # ebike-connect-js
 
+![](https://github.com/FlorianCassayre/ebike-connect-js/actions/workflows/ci.yml/badge.svg)
+![](https://img.shields.io/npm/v/ebike-connect-js?color=brightgreen)
+![](https://img.shields.io/npm/l/ebike-connect-js?color=brightgreen)
+
+<p align="center">
+<img src="logo.svg">
+</p>
+
 An unofficial API for the [Bosch eBike Connect](https://www.ebike-connect.com/) web service, written for Node.js. :bike:
 
 ## Installation
@@ -12,33 +20,28 @@ npm install ebike-connect-js
 
 This library is designed for Node.js only and will not work on browsers.
 
-Authentication is currently not supported.
-Instead, you must log in from the official website and retrieve the following cookie from your browser:
+You will need your username and password for the eBike Connect service.
+We recommend storing them in environment variables, e.g. `.env`:
 ```
-...
-Cookie: REMEMBER=xxxxx; ...
-...
-```
-
-We recommend storing these cookies in a environment variable, e.g. `.env`:
-```
-COOKIE_REMEMBER=xxxxx
+EBIKE_CONNECT_USERNAME=xxxxx
+EBIKE_CONNECT_PASSWORD=xxxxx
 ```
 
 Then create a file `myfile.js`:
 ```javascript
-import { getMyEBikes } from 'ebike-connect-js';
+import { postAuth, getMyEBikes } from 'ebike-connect-js';
 
-const auth = {
-  cookies: {
-    remember: process.env.COOKIE_REMEMBER,
-  },
+const credentials = {
+  username: process.env.EBIKE_CONNECT_USERNAME,
+  password: process.env.EBIKE_CONNECT_PASSWORD,
 };
 
-getMyEBikes(auth)().then(json => console.log(json));
+postAuth(credentials)
+  .then(auth => getMyEBikes(auth)())
+  .then(json => console.log(json));
 ```
 
-You may then load this environment variable using the package [dotenv](https://www.npmjs.com/package/dotenv) by running `node -r dotenv/config myfile.js`.
+You may then load these environment variables using e.g. the package [dotenv](https://www.npmjs.com/package/dotenv) by running `node -r dotenv/config myfile.js`.
 
 ## Bug report
 

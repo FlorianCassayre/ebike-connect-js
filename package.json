@@ -1,6 +1,6 @@
 {
   "name": "ebike-connect-js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "build/cjs/index.js",
   "module": "build/es6/index.js",
   "types": "build/es6/index.d.ts",

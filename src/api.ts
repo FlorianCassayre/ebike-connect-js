@@ -55,21 +55,82 @@ type RequestOptionalArgument<A, R> = (auth: EBikeConnectAuth) => (arg?: A) => Pr
 
 // API
 
-// Does not require authentication
+/**
+ * Logs in to the service and if it succeeds returns the session information as {@link EBikeConnectAuth}.
+ * @param username The username of the account (generally an email address)
+ * @param password The password of the account
+ */
+export const postAuth = async ({ username, password }: { username: string; password: string }): Promise<EBikeConnectAuth> => {
+  return await fetch(buildUrl(EBIKE_CONNECT_ENDPOINT, '/ebikeconnect/api/portal/login/public'), {
+    method: 'POST',
+    body: JSON.stringify({
+      username,
+      password,
+      rememberme: true, // true: JESSIONID & REMEMBER ; false: REMEMBER
+    }),
+    headers: {
+      'content-type': 'application/json',
+    },
+  }).then((response) => {
+    const setCookies = response.headers.raw()['set-cookie'];
+    if (setCookies === undefined) {
+      throw new Error();
+    }
+    const remember = Object.fromEntries(
+      setCookies.map((cookie) => {
+        const [key, value] = cookie.split(';')[0].split('=');
+        return [key, value];
+      }),
+    )[COOKIE_REMEMBER];
+    if (remember !== undefined) {
+      return {
+        cookies: {
+          remember,
+        },
+      };
+    } else {
+      throw new Error();
+    }
+  });
+};
+
+/**
+ * Get the version number of an unidentified service.
+ * This endpoint does not appear to require authentication.
+ * @param auth
+ */
 export const getVersionNumber: RequestArgumentless<ResponseVersionNumber> = (auth) => async () => await fetchApi('/versionNumber.txt', auth);
 
+/**
+ * Get the current version of the eBike Connect API.
+ * @param auth
+ */
 export const getApiVersion: RequestArgumentless<ResponseApiVersion> = (auth) => async () => await fetchApi('/ebikeconnect/api/api_version', auth);
 
+/**
+ * Get a trip record from its identifier.
+ * A trip is made of several rides, the relation can be retrieved with {@link getActivityTripHeaders}.
+ * @param auth
+ */
 export const getActivityTrip: RequestWithArgument<{ id: string }, ResponseActivityTrip> =
   (auth) =>
   async ({ id }) =>
     await fetchApi(`/ebikeconnect/api/activities/trip/details/${encodeURIComponent(id)}`, auth);
 
+/**
+ * Get a ride record from its identifier.
+ * A ride is always part of a trip, the relation can be retrieved with {@link getActivityTripHeaders}.
+ * @param auth
+ */
 export const getActivityRide: RequestWithArgument<{ id: string }, ResponseActivityRide> =
   (auth) =>
   async ({ id }) =>
     await fetchApi(`/ebikeconnect/api/activities/ride/details/${encodeURIComponent(id)}`, auth);
 
+/**
+ * Get the latest trips and rides.
+ * @param auth
+ */
 export const getActivityTripHeaders: RequestOptionalArgument<{ max?: number; offset?: number }, ResponseActivityTripHeaders> =
   (auth) =>
   async ({ max = 20, offset = new Date().getTime() } = {}) =>
@@ -78,4 +139,8 @@ export const getActivityTripHeaders: RequestOptionalArgument<{ max?: number; off
       offset,
     });
 
+/**
+ * Get the e-bikes and accessories owned.
+ * @param auth
+ */
 export const getMyEBikes: RequestArgumentless<ResponseMyEbikes> = (auth) => async () => await fetchApi('/ebikeconnect/api/portal/devices/my_ebikes', auth);
