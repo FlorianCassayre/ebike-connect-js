@@ -50,7 +50,7 @@ export type CommonActivityRecord = CommonActivityRich & {
   max_altitude: number;
   cadence: (number | null)[][];
   heart_rate: (number | null)[][];
-  speed: number[][];
+  speed: (number | null)[][];
   coordinates: ([number, number] | [null, null])[][];
   portal_altitudes: (number | null)[][];
   training_effect: number;
@@ -76,9 +76,9 @@ export type CommonActivityRecord = CommonActivityRich & {
 
 export type ResponseActivityRide = CommonActivityRecord &
   CommonActivityRide & {
-    speed_weight: number;
-    cadence_weight: number;
-    driver_power_weight: number;
+    speed_weight?: number;
+    cadence_weight?: number;
+    driver_power_weight?: number;
   };
 
 export type ResponseActivityTrip = CommonActivityRecord & CommonActivityTrip;
