@@ -41,7 +41,7 @@ postAuth(credentials)
   .then(json => console.log(json));
 ```
 
-You may then load these environment variables using e.g. the package [dotenv](https://www.npmjs.com/package/dotenv) by running `node -r dotenv/config myfile.js`.
+You may then load these environment variables using e.g. the package [dotenv](https://www.npmjs.com/package/dotenv) by running `node -r dotenv/config myfile.js` (or `ts-node -r dotenv/config myfile.ts`).
 
 ## Bug report
 

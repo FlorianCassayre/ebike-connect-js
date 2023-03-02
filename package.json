@@ -13,7 +13,7 @@
     "build:cjs": "tsc --module commonjs --outDir build/cjs",
     "build:clean": "rm -rf build",
     "build": "npm run build:clean && npm run build:es6 && npm run build:cjs",
-    "generate-zod": "ts-to-zod src/types.ts tests/generated/schemas.ts",
+    "generate-zod": "ts-to-zod src/types.ts tests/generated/schemas.ts && sed -i -e 's/})/}).strict()/g' tests/generated/schemas.ts && sed -i -e 's/\\.and(/.merge(/g' tests/generated/schemas.ts",
     "test": "npm run generate-zod && mocha -r ts-node/register -r dotenv/config tests/**/*.test.ts --timeout 10000",
     "lint": "eslint --fix src/**.ts",
     "format": "prettier --write src/**.ts tests/**.ts *.json .eslintrc.json .prettierrc",

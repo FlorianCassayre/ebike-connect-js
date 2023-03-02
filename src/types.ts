@@ -61,6 +61,7 @@ export type CommonActivityRecord = CommonActivityRich & {
   total_driver_power: number;
   total_driver_consumption_percentage: number;
   total_battery_consumption_percentage: number;
+  bui_decoded_serial_number: string;
   bui_decoded_part_number: StringInteger;
   drive_unit_decoded_serial_number: string;
   drive_unit_decoded_part_number: string;
@@ -78,7 +79,6 @@ export type ResponseActivityRide = CommonActivityRecord &
     speed_weight: number;
     cadence_weight: number;
     driver_power_weight: number;
-    bui_decoded_serial_number: string;
   };
 
 export type ResponseActivityTrip = CommonActivityRecord & CommonActivityTrip;
