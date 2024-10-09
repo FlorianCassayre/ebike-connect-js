@@ -43,8 +43,18 @@ postAuth(credentials)
 
 You may then load these environment variables using e.g. the package [dotenv](https://www.npmjs.com/package/dotenv) by running `node -r dotenv/config myfile.js` (or `ts-node -r dotenv/config myfile.ts`).
 
+## Example project
+
+This library was used to build the following website: **[bike.cassayre.me](https://bike.cassayre.me/)** ([GitHub](https://github.com/FlorianCassayre/ebike-visualization))
+
 ## Bug report
 
 The methods and type declarations provided by this library are purely speculative, as the API may change at any time.
 
 Please file a ticket if you encounter problems.
+
+## Related projects
+
+- [eMerzh/ebike-dl](https://github.com/eMerzh/ebike-dl): CLI written in Python to download your data
+- [gitlab.com/cycliste-urbain/resources](https://gitlab.com/cycliste-urbain/resources/-/tree/main/eBCDownload): a similar project
+- [cgiesche/ebikeconnect-api](https://github.com/cgiesche/ebikeconnect-api): Java client (unmaintained)
